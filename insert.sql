@@ -33,3 +33,60 @@ INSERT INTO BebidasdoPedido (IDPedido, IDBebida, Quantidade, Preco, Subtotal)
 VALUES
     (1, 1, 3, 2.49, 7.47),
     (2, 2, 2, 3.99, 7.98);
+
+
+
+--Criação das Views
+
+
+
+-- Consultar todos os pedidos, quais clientes fizeram os pedidos,
+-- data e hora do pedido, status do pedido e total do pedido
+CREATE VIEW ViewPedidosClientes AS
+SELECT
+    P.IDPedido,
+    C.Nome AS NomeCliente,
+    C.Sobrenome AS SobrenomeCliente,
+    P.DateHora AS DataHoraPedido,
+    P.StatusPedido,
+    P.TotalPedido
+FROM Pedidos AS P
+JOIN Clientes AS C ON P.IDCliente = C.IDCliente;
+
+-- Consultar as tortas disponiveis com seus preços
+CREATE VIEW ViewTortasDisponiveis AS
+SELECT NomeTorta, Preco
+FROM Tortas
+WHERE Disponibilidade > 0;
+
+-- Consultar bebidas disponiveis com seus preços
+CREATE VIEW ViewBebidasDisponiveis AS
+SELECT NomeBebida, Preco
+FROM Bebidas
+WHERE Disponibilidade > 0;
+
+
+-- Consultar pedidos de um cliente específico
+CREATE VIEW ViewPedidosCliente1 AS
+SELECT 
+    C.Nome,
+    P.IDPedido, 
+    P.DateHora, 
+    P.StatusPedido, 
+    P.TotalPedido
+FROM Pedidos AS P
+JOIN Clientes AS C ON P.IDCliente = C.IDCliente
+WHERE P.IDCliente = 1;
+
+
+-- Contar a quantidade de pedidos por status
+CREATE VIEW ViewQuantidadePedidosPorStatus AS
+SELECT StatusPedido, COUNT(*) AS TotalPedidos
+FROM Pedidos
+GROUP BY StatusPedido;
+
+SELECT * FROM ViewPedidosClientes;
+SELECT * FROM ViewTortasDisponiveis;
+SELECT * FROM ViewBebidasDisponiveis;
+SELECT * FROM ViewPedidosCliente1;
+SELECT * FROM ViewQuantidadePedidosPorStatus;
